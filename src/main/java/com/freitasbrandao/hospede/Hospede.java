@@ -21,7 +21,7 @@ public class Hospede {
     private String protocolo;
     private String dataAcolhimento;
     private String dataRetorno;
-    private Boolean demandaEspontanea;
+    private String demandaEspontanea;
     private String motivoEntrada;
     private String instituicaoEncaminhamento;
     private String nome;
@@ -108,11 +108,11 @@ public class Hospede {
         this.dataRetorno = dataRetorno;
     }
 
-    public Boolean getDemandaEspontanea() {
+    public String getDemandaEspontanea() {
         return demandaEspontanea;
     }
 
-    public void setDemandaEspontanea(Boolean demandaEspontanea) {
+    public void setDemandaEspontanea(String demandaEspontanea) {
         this.demandaEspontanea = demandaEspontanea;
     }
 
