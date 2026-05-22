@@ -2,6 +2,7 @@ package com.freitasbrandao.hospede;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,8 @@ public class HospedeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Hospede> buscarPorId(@PathVariable Long id) {
-        return hospedeRepository.findById(id)
+        Long hospedeId = Objects.requireNonNull(id, "id e obrigatorio");
+        return hospedeRepository.findById(hospedeId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -38,14 +40,20 @@ public class HospedeController {
     public ResponseEntity<Hospede> criar(@RequestBody Hospede hospede) {
         hospede.setId(null);
         Hospede salvo = hospedeRepository.save(hospede);
+        Long idGerado = Objects.requireNonNull(salvo.getId(), "id gerado e obrigatorio");
+        URI localizacao = Objects.requireNonNull(
+                URI.create("/api/hospedes/" + idGerado),
+                "uri de localizacao e obrigatoria"
+        );
         return ResponseEntity
-                .created(URI.create("/api/hospedes/" + salvo.getId()))
+                .created(localizacao)
                 .body(salvo);
     }
 
     @PutMapping
     public ResponseEntity<Hospede> atualizar(@RequestBody Hospede hospede) {
-        if (hospede.getId() == null || !hospedeRepository.existsById(hospede.getId())) {
+        Long hospedeId = hospede.getId();
+        if (hospedeId == null || !hospedeRepository.existsById(hospedeId)) {
             return ResponseEntity.notFound().build();
         }
 
@@ -54,11 +62,12 @@ public class HospedeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
-        if (!hospedeRepository.existsById(id)) {
+        Long hospedeId = Objects.requireNonNull(id, "id e obrigatorio");
+        if (!hospedeRepository.existsById(hospedeId)) {
             return ResponseEntity.notFound().build();
         }
 
-        hospedeRepository.deleteById(id);
+        hospedeRepository.deleteById(hospedeId);
         return ResponseEntity.noContent().build();
     }
 }
