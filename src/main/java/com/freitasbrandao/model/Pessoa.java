@@ -48,7 +48,7 @@ public class Pessoa {
     private String telefone;
 
     // Documentação
-    @Column(length = 11, unique = true)
+    @Column(name = "cpf", nullable = false, unique = true, length = 11, columnDefinition = "bpchar(11)")
     private String cpf;
 
     @Column(length = 20)
