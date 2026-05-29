@@ -18,10 +18,11 @@ public class Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Informações iniciais do acolhimento
+    // Protocolo gerado automaticamente
     @Column(nullable = false, unique = true, length = 20)
     private String protocolo;
 
+    // Informações do acolhimento
     @Column(nullable = false)
     private LocalDate dataAcolhimento;
 
@@ -48,7 +49,8 @@ public class Pessoa {
     private String telefone;
 
     // Documentação
-    @Column(name = "cpf", nullable = false, unique = true, length = 11, columnDefinition = "bpchar(11)")
+    // Armazenado sempre sem formatação (11 dígitos)
+    @Column(name = "cpf", unique = true, length = 11)
     private String cpf;
 
     @Column(length = 20)

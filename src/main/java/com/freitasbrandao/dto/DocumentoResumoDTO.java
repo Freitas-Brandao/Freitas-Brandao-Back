@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.time.LocalDateTime;
 
-// Usado na listagem — SEM o campo conteudo (BYTEA)
 @Data
 @AllArgsConstructor
 public class DocumentoResumoDTO {

@@ -1,4 +1,3 @@
-
 package com.freitasbrandao.service;
 
 import com.freitasbrandao.dto.PessoaRequestDTO;
@@ -13,6 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -20,57 +23,57 @@ public class PessoaService {
 
     private final PessoaRepository pessoaRepository;
 
+    @Transactional
     public PessoaResponseDTO cadastrar(PessoaRequestDTO dto) {
-        if (dto.getCpf() != null && pessoaRepository.existsByCpf(dto.getCpf())) {
+        String cpfLimpo = limparCpf(dto.getCpf());
+
+        if (cpfLimpo != null && pessoaRepository.existsByCpf(cpfLimpo)) {
             throw new IllegalArgumentException("Já existe uma pessoa cadastrada com este CPF.");
         }
-        if (pessoaRepository.existsByProtocolo(dto.getProtocolo())) {
-            throw new IllegalArgumentException("Já existe um cadastro com este protocolo.");
-        }
 
-        Pessoa pessoa = toEntity(new Pessoa(), dto);
+        Pessoa pessoa = toEntity(new Pessoa(), dto, cpfLimpo);
+        pessoa.setProtocolo(gerarProtocolo());
+
         return PessoaResponseDTO.fromEntity(pessoaRepository.save(pessoa));
     }
 
+    @Transactional(readOnly = true)
     public Page<PessoaResumoDTO> listar(String nome, String cpf,
                                         String protocolo, Genero genero,
                                         Pageable pageable) {
+        String cpfLimpo = limparCpf(cpf);
         return pessoaRepository
-                .findAll(PessoaSpecification.filtrar(nome, cpf, protocolo, genero), pageable)
+                .findAll(PessoaSpecification.filtrar(nome, cpfLimpo, protocolo, genero), pageable)
                 .map(PessoaResumoDTO::fromEntity);
     }
 
+    @Transactional(readOnly = true)
     public PessoaResponseDTO buscarPorId(Long id) {
         return PessoaResponseDTO.fromEntity(buscarEntidade(id));
     }
 
+    @Transactional
     public PessoaResponseDTO atualizar(Long id, PessoaRequestDTO dto) {
         Pessoa pessoa = buscarEntidade(id);
+        String cpfLimpo = limparCpf(dto.getCpf());
 
-        // Verifica conflito de CPF com outra pessoa
-        if (dto.getCpf() != null) {
-            pessoaRepository.findByCpf(dto.getCpf()).ifPresent(existente -> {
+        if (cpfLimpo != null) {
+            pessoaRepository.findByCpf(cpfLimpo).ifPresent(existente -> {
                 if (!existente.getId().equals(id)) {
                     throw new IllegalArgumentException("CPF já pertence a outro cadastro.");
                 }
             });
         }
 
-        // Verifica conflito de protocolo com outro cadastro
-        pessoaRepository.findByProtocolo(dto.getProtocolo()).ifPresent(existente -> {
-            if (!existente.getId().equals(id)) {
-                throw new IllegalArgumentException("Protocolo já pertence a outro cadastro.");
-            }
-        });
-
-        return PessoaResponseDTO.fromEntity(pessoaRepository.save(toEntity(pessoa, dto)));
+        return PessoaResponseDTO.fromEntity(
+                pessoaRepository.save(toEntity(pessoa, dto, cpfLimpo)));
     }
 
+    @Transactional
     public void deletar(Long id) {
         pessoaRepository.delete(buscarEntidade(id));
     }
 
-    // ---- helpers ----
 
     public Pessoa buscarEntidade(Long id) {
         return pessoaRepository.findById(id)
@@ -78,9 +81,21 @@ public class PessoaService {
                         "Pessoa não encontrada com id: " + id));
     }
 
-    private Pessoa toEntity(Pessoa pessoa, PessoaRequestDTO dto) {
-        pessoa.setProtocolo(dto.getProtocolo());
-        pessoa.setDataAcolhimento(dto.getDataAcolhimento());
+    private String limparCpf(String cpf) {
+        if (cpf == null || cpf.isBlank()) return null;
+        return cpf.replaceAll("[.\\-]", "");
+    }
+
+    private String gerarProtocolo() {
+        String data = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        long count = pessoaRepository.count() + 1;
+        return String.format("CRAS-%s-%05d", data, count);
+    }
+
+    private Pessoa toEntity(Pessoa pessoa, PessoaRequestDTO dto, String cpfLimpo) {
+        pessoa.setDataAcolhimento(
+                dto.getDataAcolhimento() != null ? dto.getDataAcolhimento() : LocalDate.now()
+        );
         pessoa.setHoraAcolhimento(dto.getHoraAcolhimento());
         pessoa.setDemandaEspontanea(Boolean.TRUE.equals(dto.getDemandaEspontanea()));
         pessoa.setNome(dto.getNome());
@@ -89,7 +104,7 @@ public class PessoaService {
         pessoa.setNaturalidade(dto.getNaturalidade());
         pessoa.setGenero(dto.getGenero());
         pessoa.setTelefone(dto.getTelefone());
-        pessoa.setCpf(dto.getCpf());
+        pessoa.setCpf(cpfLimpo);
         pessoa.setRg(dto.getRg());
         pessoa.setOrgaoExpedidorRg(dto.getOrgaoExpedidorRg());
         pessoa.setTituloEleitoral(dto.getTituloEleitoral());

@@ -10,10 +10,6 @@ import java.time.LocalTime;
 public class PessoaRequestDTO {
 
     // Acolhimento
-    @NotBlank(message = "Protocolo é obrigatório")
-    private String protocolo;
-
-    @NotNull(message = "Data de acolhimento é obrigatória")
     private LocalDate dataAcolhimento;
 
     private LocalTime horaAcolhimento;
@@ -33,12 +29,15 @@ public class PessoaRequestDTO {
     @NotNull(message = "Gênero é obrigatório")
     private Genero genero;
 
-    @Pattern(regexp = "^\\(\\d{2}\\)\\s?\\d{4,5}-?\\d{4}$",
+    @Pattern(regexp = "^\\(?\\d{2}\\)?[\\s-]?\\d{4,5}-?\\d{4}$",
             message = "Telefone inválido")
     private String telefone;
 
     // Documentação
-    @Pattern(regexp = "^\\d{11}$", message = "CPF deve conter 11 dígitos numéricos")
+    @Pattern(
+            regexp = "^(\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}|\\d{11})$",
+            message = "CPF inválido. Use 11 dígitos numéricos ou o formato 000.000.000-00"
+    )
     private String cpf;
 
     private String rg;
