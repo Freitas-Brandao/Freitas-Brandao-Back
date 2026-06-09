@@ -34,6 +34,8 @@ public class DesligamentoService {
                 .observacoes(request.getObservacoes())
                 .build();
 
+        pessoa.setUltimaDataSaida(request.getData());
+
         return toResponse(desligamentoRepository.save(desligamento));
     }
 
