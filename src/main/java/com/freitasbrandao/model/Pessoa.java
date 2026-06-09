@@ -28,6 +28,15 @@ public class Pessoa {
 
     private LocalTime horaAcolhimento;
 
+    private LocalDate dataRetorno1;
+
+    private LocalDate dataRetorno2;
+
+    private LocalDate dataRetorno3;
+
+    @Column(length = 255)
+    private String instituicaoEncaminhamento;
+
     @Column(nullable = false)
     @Builder.Default
     private Boolean demandaEspontanea = false;
@@ -40,7 +49,28 @@ public class Pessoa {
 
     private LocalDate dataNascimento;
 
+    @Column(length = 100)
+    private String escolaridade;
+
+    @Column(length = 100)
+    private String nacionalidade;
+
     private String naturalidade;
+
+    @Column(length = 100)
+    private String estadoCivil;
+
+    @Column(length = 100)
+    private String filhos;
+
+    @Column(length = 255)
+    private String mae;
+
+    @Column(length = 255)
+    private String pai;
+
+    @Column(columnDefinition = "TEXT")
+    private String referenciasSociofamiliares;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -69,6 +99,19 @@ public class Pessoa {
     @Column(length = 50)
     private String certidaoNascimento;
 
+    @Column(length = 100)
+    private String boletimOcorrencia;
+
+    @Column(length = 30)
+    private String numeroNis;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean cadUnico = false;
+
+    @Column(length = 30)
+    private String cartaoSus;
+
     // Saúde
     @Column(columnDefinition = "TEXT")
     private String condicoesSaude;
@@ -78,6 +121,9 @@ public class Pessoa {
 
     @Column(columnDefinition = "TEXT")
     private String alergiasRestricoes;
+
+    @Column(columnDefinition = "TEXT")
+    private String outrasAlergias;
 
     @Column(nullable = false)
     @Builder.Default

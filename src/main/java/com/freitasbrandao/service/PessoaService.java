@@ -118,11 +118,22 @@ public class PessoaService {
                 dto.getDataAcolhimento() != null ? dto.getDataAcolhimento() : LocalDate.now()
         );
         pessoa.setHoraAcolhimento(dto.getHoraAcolhimento());
+        pessoa.setDataRetorno1(dto.getDataRetorno1());
+        pessoa.setDataRetorno2(dto.getDataRetorno2());
+        pessoa.setDataRetorno3(dto.getDataRetorno3());
+        pessoa.setInstituicaoEncaminhamento(dto.getInstituicaoEncaminhamento());
         pessoa.setDemandaEspontanea(Boolean.TRUE.equals(dto.getDemandaEspontanea()));
         pessoa.setNome(dto.getNome());
         pessoa.setNomeSocial(dto.getNomeSocial());
         pessoa.setDataNascimento(dto.getDataNascimento());
+        pessoa.setEscolaridade(dto.getEscolaridade());
+        pessoa.setNacionalidade(dto.getNacionalidade());
         pessoa.setNaturalidade(dto.getNaturalidade());
+        pessoa.setEstadoCivil(dto.getEstadoCivil());
+        pessoa.setFilhos(dto.getFilhos());
+        pessoa.setMae(dto.getMae());
+        pessoa.setPai(dto.getPai());
+        pessoa.setReferenciasSociofamiliares(dto.getReferenciasSociofamiliares());
         pessoa.setGenero(dto.getGenero());
         pessoa.setTelefone(dto.getTelefone());
         pessoa.setCpf(cpfLimpo);
@@ -131,9 +142,14 @@ public class PessoaService {
         pessoa.setTituloEleitoral(dto.getTituloEleitoral());
         pessoa.setCarteiraTrabalho(dto.getCarteiraTrabalho());
         pessoa.setCertidaoNascimento(dto.getCertidaoNascimento());
+        pessoa.setBoletimOcorrencia(dto.getBoletimOcorrencia());
+        pessoa.setNumeroNis(dto.getNumeroNis());
+        pessoa.setCadUnico(Boolean.TRUE.equals(dto.getCadUnico()));
+        pessoa.setCartaoSus(dto.getCartaoSus());
         pessoa.setCondicoesSaude(dto.getCondicoesSaude());
         pessoa.setMedicamentosEmUso(dto.getMedicamentosEmUso());
         pessoa.setAlergiasRestricoes(dto.getAlergiasRestricoes());
+        pessoa.setOutrasAlergias(dto.getOutrasAlergias());
         pessoa.setUsaSubstanciasPsicoativas(Boolean.TRUE.equals(dto.getUsaSubstanciasPsicoativas()));
         pessoa.setSubstanciasQuais(dto.getSubstanciasQuais());
         pessoa.setAtividadesRealizadas(dto.getAtividadesRealizadas());

@@ -14,6 +14,11 @@ public class PessoaRequestDTO {
 
     private LocalTime horaAcolhimento;
 
+    private LocalDate dataRetorno1;
+    private LocalDate dataRetorno2;
+    private LocalDate dataRetorno3;
+    private String instituicaoEncaminhamento;
+
     private Boolean demandaEspontanea = false;
 
     // Dados pessoais
@@ -24,7 +29,14 @@ public class PessoaRequestDTO {
 
     private LocalDate dataNascimento;
 
+    private String escolaridade;
+    private String nacionalidade;
     private String naturalidade;
+    private String estadoCivil;
+    private String filhos;
+    private String mae;
+    private String pai;
+    private String referenciasSociofamiliares;
 
     @NotNull(message = "Gênero é obrigatório")
     private Genero genero;
@@ -45,11 +57,16 @@ public class PessoaRequestDTO {
     private String tituloEleitoral;
     private String carteiraTrabalho;
     private String certidaoNascimento;
+    private String boletimOcorrencia;
+    private String numeroNis;
+    private Boolean cadUnico = false;
+    private String cartaoSus;
 
     // Saúde
     private String condicoesSaude;
     private String medicamentosEmUso;
     private String alergiasRestricoes;
+    private String outrasAlergias;
     private Boolean usaSubstanciasPsicoativas = false;
     private String substanciasQuais;
 

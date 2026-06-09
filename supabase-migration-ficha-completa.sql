@@ -1,0 +1,17 @@
+alter table pessoas
+  add column if not exists data_retorno1 date,
+  add column if not exists data_retorno2 date,
+  add column if not exists data_retorno3 date,
+  add column if not exists instituicao_encaminhamento varchar(255),
+  add column if not exists escolaridade varchar(100),
+  add column if not exists nacionalidade varchar(100),
+  add column if not exists estado_civil varchar(100),
+  add column if not exists filhos varchar(100),
+  add column if not exists mae varchar(255),
+  add column if not exists pai varchar(255),
+  add column if not exists referencias_sociofamiliares text,
+  add column if not exists boletim_ocorrencia varchar(100),
+  add column if not exists numero_nis varchar(30),
+  add column if not exists cad_unico boolean not null default false,
+  add column if not exists cartao_sus varchar(30),
+  add column if not exists outras_alergias text;
