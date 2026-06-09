@@ -27,4 +27,6 @@ public interface DocumentoRepository extends JpaRepository<Documento, Long> {
     Optional<Documento> findFirstByPessoaIdAndTipo(Long pessoaId, TipoDocumento tipo);
 
     void deleteByIdAndPessoaId(Long id, Long pessoaId);
+
+    void deleteByPessoaId(Long pessoaId);
 }

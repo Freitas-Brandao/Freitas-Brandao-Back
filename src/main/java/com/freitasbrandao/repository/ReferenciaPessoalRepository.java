@@ -13,4 +13,6 @@ public interface ReferenciaPessoalRepository extends JpaRepository<ReferenciaPes
     Optional<ReferenciaPessoal> findByIdAndPessoaId(Long id, Long pessoaId);
 
     void deleteByIdAndPessoaId(Long id, Long pessoaId);
+
+    void deleteByPessoaId(Long pessoaId);
 }

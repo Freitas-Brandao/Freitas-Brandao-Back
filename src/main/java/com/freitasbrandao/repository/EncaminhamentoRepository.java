@@ -13,4 +13,6 @@ public interface EncaminhamentoRepository extends JpaRepository<Encaminhamento, 
     Optional<Encaminhamento> findByIdAndPessoaId(Long id, Long pessoaId);
 
     void deleteByIdAndPessoaId(Long id, Long pessoaId);
+
+    void deleteByPessoaId(Long pessoaId);
 }

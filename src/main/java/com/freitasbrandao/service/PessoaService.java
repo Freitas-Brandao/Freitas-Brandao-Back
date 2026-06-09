@@ -6,8 +6,14 @@ import com.freitasbrandao.dto.PessoaResumoDTO;
 import com.freitasbrandao.exception.ResourceNotFoundException;
 import com.freitasbrandao.model.Genero;
 import com.freitasbrandao.model.Pessoa;
+import com.freitasbrandao.repository.BeneficioSocialRepository;
+import com.freitasbrandao.repository.DesligamentoRepository;
+import com.freitasbrandao.repository.DocumentoRepository;
+import com.freitasbrandao.repository.EncaminhamentoRepository;
+import com.freitasbrandao.repository.EvolucaoRepository;
 import com.freitasbrandao.repository.PessoaRepository;
 import com.freitasbrandao.repository.PessoaSpecification;
+import com.freitasbrandao.repository.ReferenciaPessoalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +28,12 @@ import java.time.format.DateTimeFormatter;
 public class PessoaService {
 
     private final PessoaRepository pessoaRepository;
+    private final DocumentoRepository documentoRepository;
+    private final BeneficioSocialRepository beneficioSocialRepository;
+    private final ReferenciaPessoalRepository referenciaPessoalRepository;
+    private final DesligamentoRepository desligamentoRepository;
+    private final EvolucaoRepository evolucaoRepository;
+    private final EncaminhamentoRepository encaminhamentoRepository;
 
     @Transactional
     public PessoaResponseDTO cadastrar(PessoaRequestDTO dto) {
@@ -71,7 +83,16 @@ public class PessoaService {
 
     @Transactional
     public void deletar(Long id) {
-        pessoaRepository.delete(buscarEntidade(id));
+        Pessoa pessoa = buscarEntidade(id);
+
+        documentoRepository.deleteByPessoaId(id);
+        beneficioSocialRepository.deleteByPessoaId(id);
+        referenciaPessoalRepository.deleteByPessoaId(id);
+        desligamentoRepository.deleteByPessoaId(id);
+        evolucaoRepository.deleteByPessoaId(id);
+        encaminhamentoRepository.deleteByPessoaId(id);
+
+        pessoaRepository.delete(pessoa);
     }
 
 

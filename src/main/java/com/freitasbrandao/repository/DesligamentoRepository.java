@@ -13,4 +13,6 @@ public interface DesligamentoRepository extends JpaRepository<Desligamento, Long
     Optional<Desligamento> findByIdAndPessoaId(Long id, Long pessoaId);
 
     void deleteByIdAndPessoaId(Long id, Long pessoaId);
+
+    void deleteByPessoaId(Long pessoaId);
 }

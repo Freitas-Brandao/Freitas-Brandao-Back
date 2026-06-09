@@ -13,4 +13,6 @@ public interface EvolucaoRepository extends JpaRepository<Evolucao, Long> {
     Optional<Evolucao> findByIdAndPessoaId(Long id, Long pessoaId);
 
     void deleteByIdAndPessoaId(Long id, Long pessoaId);
+
+    void deleteByPessoaId(Long pessoaId);
 }
