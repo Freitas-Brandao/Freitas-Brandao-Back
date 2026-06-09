@@ -29,6 +29,7 @@ public class Pessoa {
     private LocalTime horaAcolhimento;
 
     @Column(nullable = false)
+    @Builder.Default
     private Boolean demandaEspontanea = false;
 
     // Dados pessoais
@@ -79,6 +80,7 @@ public class Pessoa {
     private String alergiasRestricoes;
 
     @Column(nullable = false)
+    @Builder.Default
     private Boolean usaSubstanciasPsicoativas = false;
 
     @Column(columnDefinition = "TEXT")
@@ -97,6 +99,7 @@ public class Pessoa {
 
     // Termo de orientação
     @Column(nullable = false)
+    @Builder.Default
     private Boolean aceitouTermo = false;
 
     private LocalDate dataAssinaturaTermo;
